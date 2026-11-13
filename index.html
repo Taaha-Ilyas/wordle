@@ -54,14 +54,14 @@ input{font-family:inherit}
 .lobby-wrap{width:100%;max-width:440px;padding:28px 20px;display:flex;flex-direction:column;gap:16px;margin:auto}
 .room-code{font-size:48px;font-weight:900;letter-spacing:12px;text-align:center;padding:8px 0 0 12px}
 .room-label{text-align:center;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:2px}
-.players{display:flex;flex-direction:column;gap:8px}
-.player{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:var(--panel2);border:1px solid var(--border)}
-.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--accent)}
-.avatar.b{background:var(--accent2);color:#06262a}
+.players{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.player{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--panel2);border:1px solid var(--border);min-width:0}
+.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;flex:none;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
 .avatar.wait{background:var(--grey);animation:pulse 1.4s infinite}
 @keyframes pulse{50%{opacity:.4}}
-.player .pname{font-weight:700;flex:1}
-.badge{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--grey);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.player .pname{font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.player .pname small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+.player.empty{opacity:.5;border-style:dashed}
 .setting{display:flex;flex-direction:column;gap:6px}
 .setting label{font-size:13px;color:var(--muted);font-weight:600}
 .seg{display:flex;background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px}
@@ -72,11 +72,11 @@ input{font-family:inherit}
 
 /* ---------- Game ---------- */
 #screen-game{justify-content:flex-start;overflow:hidden}
-.topbar{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:10px;border-bottom:1px solid var(--border)}
+.topbar{width:100%;max-width:960px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:10px;border-bottom:1px solid var(--border)}
 .topbar .left,.topbar .right{display:flex;align-items:center;gap:8px;min-width:90px}
 .topbar .right{justify-content:flex-end}
 .icon-btn{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;color:var(--muted)}
-.scoreline{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px}
+.scoreline{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:15px}
 .scoreline .sc{font-size:22px;min-width:18px;text-align:center}
 .scoreline .nm{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-weight:700;font-size:13px}
 .round-info{font-size:11px;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
@@ -97,21 +97,30 @@ input{font-family:inherit}
 .tile.bounce{animation:bounce .9s}
 @keyframes bounce{0%,20%{transform:translateY(0)}40%{transform:translateY(-22px)}50%{transform:translateY(4px)}60%{transform:translateY(-10px)}80%{transform:translateY(2px)}100%{transform:translateY(0)}}
 .side{display:flex;flex-direction:column;align-items:center;gap:10px}
-.side-label{font-size:13px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:8px}
-.status-pill{font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);white-space:nowrap}
-.status-pill.ok{background:rgba(62,159,87,.18);border-color:var(--green);color:#7fe39a}
-.status-pill.bad{background:rgba(229,72,77,.15);border-color:var(--red);color:#ff9a9d}
-.opp-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px}
-.opp-board{display:grid;grid-template-rows:repeat(6,24px);gap:4px}
-.opp-board .orow{display:grid;grid-template-columns:repeat(5,24px);gap:4px}
-.otile{border:2px solid var(--border);border-radius:4px}
+.side-label{font-size:13px;font-weight:700;color:var(--muted)}
+.my-status{min-height:22px;font-size:13px;font-weight:700;color:var(--muted);text-align:center}
+
+/* opponents */
+.opps{display:grid;grid-template-columns:repeat(var(--cols,1),auto);gap:10px;--o:24px;justify-content:center;align-content:center}
+.opp-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:opacity .3s,border-color .3s}
+.opp-card.solved{border-color:var(--green)}
+.opp-card.left{opacity:.3}
+.opp-head{display:flex;align-items:center;gap:6px;max-width:calc(var(--o)*5 + 60px)}
+.opp-head .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.opp-name{font-weight:800;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opp-wins{font-size:11px;font-weight:800;color:#f0d26b;flex:none}
+.opp-board{display:grid;grid-template-rows:repeat(6,var(--o));gap:calc(var(--o)/7 + 1px)}
+.opp-board .orow{display:grid;grid-template-columns:repeat(5,var(--o));gap:calc(var(--o)/7 + 1px)}
+.otile{border:2px solid var(--border);border-radius:3px}
 .otile[data-state="tbd"]{border-color:#5c6275;background:#262a36}
 .otile[data-state="absent"]{background:var(--grey);border-color:var(--grey)}
 .otile[data-state="present"]{background:var(--yellow);border-color:var(--yellow)}
 .otile[data-state="correct"]{background:var(--green);border-color:var(--green)}
 .otile.flip{animation:flip .4s ease}
-.opp-info{display:flex;flex-direction:column;align-items:center;gap:6px}
-.opp-name{font-weight:800;font-size:15px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.status-pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--panel2);border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.status-pill.ok{background:rgba(62,159,87,.18);border-color:var(--green);color:#7fe39a}
+.status-pill.bad{background:rgba(229,72,77,.15);border-color:var(--red);color:#ff9a9d}
+
 .keyboard{width:100%;max-width:520px;padding:6px 6px 12px;display:flex;flex-direction:column;gap:7px;user-select:none}
 .krow{display:flex;gap:6px;justify-content:center}
 .key{flex:1;height:56px;border-radius:6px;background:var(--key);font-weight:800;font-size:15px;text-transform:uppercase;display:grid;place-items:center;max-width:46px;transition:background .2s}
@@ -124,48 +133,63 @@ input{font-family:inherit}
 
 /* toast / overlays */
 #toasts{position:fixed;top:72px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:60;pointer-events:none}
-.toast{background:#f1f2f6;color:#111;font-weight:800;padding:11px 16px;border-radius:8px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.4);animation:tin .15s}
+.toast{background:#f1f2f6;color:#111;font-weight:800;padding:11px 16px;border-radius:8px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.4);animation:tin .15s;white-space:nowrap}
 @keyframes tin{from{opacity:0;transform:translateY(-6px)}}
 .overlay{position:fixed;inset:0;background:rgba(5,6,10,.72);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
 .overlay.show{display:flex}
 .countdown{font-size:120px;font-weight:900;animation:cd .9s both;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
 @keyframes cd{0%{transform:scale(1.8);opacity:0}30%{transform:scale(1);opacity:1}100%{opacity:.9}}
-.modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;width:100%;max-width:480px;max-height:92dvh;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;animation:min .25s}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;width:100%;max-width:500px;max-height:92dvh;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;animation:min .25s}
 @keyframes min{from{transform:translateY(16px);opacity:0}}
 .res-title{font-size:32px;font-weight:900;text-align:center}
 .res-title.win{color:#7fe39a}.res-title.lose{color:#ff8a8d}.res-title.draw{color:#f0d26b}
 .res-reason{text-align:center;color:var(--muted);font-size:14.5px;line-height:1.45}
+.res-reason b{color:var(--text)}
 .answer{display:flex;justify-content:center;gap:5px}
 .answer span{width:40px;height:40px;background:var(--green);display:grid;place-items:center;font-weight:900;font-size:21px;border-radius:5px;text-transform:uppercase}
-.res-grids{display:flex;justify-content:center;gap:22px;flex-wrap:wrap}
-.res-col{display:flex;flex-direction:column;align-items:center;gap:6px}
-.res-col .who{font-weight:800;font-size:14px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.res-col .stat{font-size:12.5px;color:var(--muted);font-weight:700}
+.stand{display:flex;flex-direction:column;gap:6px}
+.st-head,.st-row{display:grid;grid-template-columns:34px 1fr auto 46px;align-items:center;gap:8px}
+.st-head{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:0 10px}
+.st-head span:last-child{text-align:right}
+.st-row{padding:8px 10px;border-radius:9px;background:var(--panel2);border:1px solid var(--border);font-size:14px}
+.st-row.me{border-color:var(--accent)}
+.st-row.win{background:rgba(62,159,87,.15);border-color:var(--green)}
+.st-place{font-weight:900;text-align:center;font-size:15px}
+.st-name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:7px;min-width:0}
+.st-name span{overflow:hidden;text-overflow:ellipsis}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.st-res{color:var(--muted);font-weight:700;font-size:13px;white-space:nowrap}
+.st-wins{text-align:right;font-weight:900;font-size:16px}
+.res-grids{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.res-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+.res-col .who{font-weight:800;font-size:13px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rgrid{display:grid;gap:3px}
 .rgrid .rr{display:grid;grid-template-columns:repeat(5,24px);gap:3px}
 .rgrid .rt{height:24px;border-radius:3px;display:grid;place-items:center;font-size:12px;font-weight:800;text-transform:uppercase;background:#20232d;border:1px solid var(--border)}
+.rgrid.sm .rr{grid-template-columns:repeat(5,17px);gap:2px}
+.rgrid.sm{gap:2px}
+.rgrid.sm .rt{height:17px;font-size:9px;border-radius:2px}
 .rt.s0{background:var(--grey);border-color:var(--grey)}.rt.s1{background:var(--yellow);border-color:var(--yellow)}.rt.s2{background:var(--green);border-color:var(--green)}
-.big-score{display:flex;justify-content:center;align-items:center;gap:16px;font-weight:900;font-size:30px}
-.big-score small{font-size:13px;color:var(--muted);font-weight:700;display:block;text-align:center;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.big-score .dash{color:var(--muted)}
 .match-banner{text-align:center;font-weight:900;font-size:16px;padding:10px;border-radius:10px;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(34,193,195,.2));border:1px solid var(--accent)}
-.waiting-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(100% - 100dvh + 12px);z-index:5}
-.my-status{min-height:22px;font-size:13px;font-weight:700;color:var(--muted);text-align:center}
+.section-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;text-align:center}
 
 @media (max-width:700px){
-  :root{--t:clamp(36px,min(13.5vw,5.9vh),56px)}
+  :root{--t:clamp(34px,min(13.5vw,5.9vh),56px)}
   .arena{flex-direction:column-reverse;gap:8px;justify-content:center}
-  .opp-card{flex-direction:row;padding:8px 12px;gap:12px;border-radius:12px}
-  .opp-board{grid-template-rows:repeat(6,9px);gap:2px}
-  .opp-board .orow{grid-template-columns:repeat(5,9px);gap:2px}
+  .arena.many{--t:clamp(30px,min(12vw,5.1vh),52px)}
+  .opps{gap:6px}
+  .opp-card{padding:6px 8px;gap:4px;border-radius:9px;min-width:62px}
   .otile{border-width:1px;border-radius:2px}
-  .opp-info{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
-  .side-label.mine{display:none}
+  .opp-name{font-size:11px;max-width:70px}
+  .opp-head .dot{display:none}
+  .status-pill{font-size:10px;padding:1px 6px}
+  .side-label{display:none}
   .key{height:52px}
   .topbar{padding:8px 10px}
   .scoreline .nm{max-width:70px}
+  .players{grid-template-columns:1fr 1fr}
 }
-@media (max-height:640px){.key{height:44px}}
+@media (max-height:680px){.key{height:44px}}
 </style>
 </head>
 <body>
@@ -175,7 +199,7 @@ input{font-family:inherit}
   <div class="home-wrap">
     <div class="logo"><span>W</span><span>O</span><span>R</span><span>D</span><span>L</span><span>E</span></div>
     <div class="sub">DUEL</div>
-    <div class="tag">Same word. Two players. Fewest rows wins.</div>
+    <div class="tag">Same word. Up to 8 players. Fewest rows wins.</div>
 
     <div class="card">
       <h3>Your name</h3>
@@ -194,13 +218,13 @@ input{font-family:inherit}
 
     <div class="card howto">
       <h3>How to play</h3>
-      <div>You and your opponent get the <b>same secret 5-letter word</b> and 6 guesses each. After every guess the tiles show how close you were.</div>
+      <div>Everyone in the room (2–8 players) gets the <b>same secret 5-letter word</b> and 6 guesses. After every guess the tiles show how close you were.</div>
       <div class="mini-legend">
         <span><i style="background:var(--green)"></i>Right spot</span>
         <span><i style="background:var(--yellow)"></i>Wrong spot</span>
         <span><i style="background:var(--grey)"></i>Not in word</span>
       </div>
-      <div>Whoever solves it in <b>fewer rows</b> wins the round. You can see your opponent's colours live — but not their letters.</div>
+      <div>Whoever solves it in the <b>fewest rows</b> wins the round. You can see everyone's colours live — but not their letters.</div>
     </div>
   </div>
 </section>
@@ -217,7 +241,7 @@ input{font-family:inherit}
       </div>
     </div>
     <div class="card">
-      <h3>Players</h3>
+      <h3 id="playersHeader">Players</h3>
       <div class="players" id="playerList"></div>
     </div>
     <div class="card" id="settingsCard">
@@ -225,13 +249,13 @@ input{font-family:inherit}
       <div class="setting">
         <label>Match length</label>
         <div class="seg" id="segTarget">
-          <button data-v="1">Best of 1</button><button data-v="2">Best of 3</button><button data-v="3">Best of 5</button>
+          <button data-v="1">1 round</button><button data-v="2">First to 2</button><button data-v="3">First to 3</button>
         </div>
       </div>
       <div class="setting">
-        <label>If both solve in the same number of rows</label>
+        <label>If players solve in the same number of rows</label>
         <div class="seg" id="segTie">
-          <button data-v="time">Faster time wins</button><button data-v="draw">It's a draw</button>
+          <button data-v="time">Faster time wins</button><button data-v="draw">Shared win</button>
         </div>
       </div>
       <div class="setting">
@@ -241,7 +265,7 @@ input{font-family:inherit}
         </div>
       </div>
     </div>
-    <button class="btn primary" id="startBtn" disabled>Waiting for opponent…</button>
+    <button class="btn primary" id="startBtn" disabled>Waiting for players…</button>
     <div class="hint" id="lobbyHint"></div>
     <button class="btn" id="leaveLobbyBtn">Leave</button>
   </div>
@@ -252,27 +276,19 @@ input{font-family:inherit}
   <div class="topbar">
     <div class="left"><button class="icon-btn" id="quitBtn">✕ Leave</button></div>
     <div>
-      <div class="scoreline" id="scoreline">
-        <span class="nm" id="sbMeName">You</span><span class="sc" id="sbMe">0</span><span style="color:var(--muted)">–</span><span class="sc" id="sbOpp">0</span><span class="nm" id="sbOppName">Opp</span>
-      </div>
+      <div class="scoreline" id="scoreline"></div>
       <div class="round-info" id="roundInfo">Round 1</div>
     </div>
     <div class="right"><span class="timer" id="timer">0:00</span></div>
   </div>
 
-  <div class="arena">
+  <div class="arena" id="arena">
     <div class="side">
-      <div class="side-label mine">You</div>
+      <div class="side-label">You</div>
       <div class="board" id="myBoard"></div>
       <div class="my-status" id="myStatus"></div>
     </div>
-    <div class="opp-card" id="oppCard">
-      <div class="opp-info">
-        <div class="opp-name" id="oppName">Opponent</div>
-        <div class="status-pill" id="oppStatus">Playing</div>
-      </div>
-      <div class="opp-board" id="oppBoard"></div>
-    </div>
+    <div class="opps" id="opps"></div>
   </div>
 
   <div class="keyboard" id="keyboard"></div>
@@ -300,23 +316,28 @@ const PEER_PREFIX = "taaha-wordleduel-v1-";
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 const STATES = ["absent", "present", "correct"];
 const MAX_ROWS = 6;
+const MAX_PLAYERS = 8;
+const COLORS = ["#7c5cff", "#22c1c3", "#f76b8a", "#f5a524", "#3ecf8e", "#4ea8ff", "#c56cf0", "#ff8c42"];
 
 const S = {
-  mode: null,            // 'host' | 'guest' | 'solo'
-  name: "", oppName: "",
-  peer: null, conn: null, code: "",
+  mode: null,              // 'host' | 'guest' | 'solo'
+  myId: null, name: "", code: "",
+  peer: null,
+  conn: null,              // guest: connection to host
+  conns: new Map(),        // host: peerId -> connection
+  players: [],             // [{id, name, score, c}]  (host is authoritative)
   settings: { target: 2, tie: "time", hard: false },
-  score: { me: 0, opp: 0 },
-  round: 0, used: [],
+  inGame: false, round: 0, used: [],
   word: "", guesses: [], patterns: [], cur: "",
   playing: false, done: false, solved: false, startTime: 0, time: 0,
   revealing: false, queue: [],
-  opp: null,
+  parts: [],               // ids of players taking part in this round
+  rs: {},                  // id -> round state
+  cards: {},               // id -> opponent card elements
   roundOver: false, matchOver: false,
   timerInt: null
 };
-function freshOpp() { return { rows: 0, guesses: [], patterns: [], done: false, solved: false, time: 0, typing: 0 }; }
-S.opp = freshOpp();
+function freshRS() { return { rows: 0, guesses: [], patterns: [], done: false, solved: false, time: 0, typing: 0, left: false }; }
 
 /* =========================================================
    HELPERS
@@ -326,6 +347,7 @@ function show(screen) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   $("screen-" + screen).classList.add("active");
 }
+function onScreen(s) { return $("screen-" + s).classList.contains("active"); }
 function toast(msg, ms = 1600) {
   const t = document.createElement("div");
   t.className = "toast"; t.textContent = msg;
@@ -338,7 +360,12 @@ function enc(w) { return btoa(w.split("").reverse().join("")); }
 function dec(w) { return atob(w).split("").reverse().join(""); }
 function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-function ordinal(n) { return ["1st", "2nd", "3rd", "4th", "5th"][n - 1]; }
+function ordinal(n) { return ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"][n - 1]; }
+function isMobile() { return window.matchMedia("(max-width:700px)").matches; }
+function player(id) { return S.players.find(p => p.id === id); }
+function pname(id) { const p = player(id); return p ? p.name : "Player"; }
+function pcolor(id) { const p = player(id); return COLORS[p ? p.c : 0]; }
+function rowsWord(n) { return n === 1 ? "row" : "rows"; }
 
 function evaluate(guess, word) {
   const res = [0, 0, 0, 0, 0], counts = {};
@@ -367,45 +394,77 @@ function hardModeError(guess) {
   return null;
 }
 
-/* Decide a round. a/b = {rows, done, solved, time}. Returns 'a' | 'b' | 'draw' | null (still undecided) */
-function judge(a, b, tie) {
-  if (a.done && b.done) {
-    if (a.solved && !b.solved) return "a";
-    if (b.solved && !a.solved) return "b";
-    if (!a.solved && !b.solved) return "draw";
-    if (a.rows < b.rows) return "a";
-    if (b.rows < a.rows) return "b";
-    if (tie === "time") { if (a.time < b.time) return "a"; if (b.time < a.time) return "b"; }
-    return "draw";
+/* Decide a round for any number of players.
+   ps = [{id, rows, done, solved, time}]
+   Returns null while undecided, otherwise {winners:[ids], early:bool} (winners empty = nobody solved) */
+function judgeAll(ps, tie) {
+  const solved = ps.filter(p => p.done && p.solved);
+  const unfinished = ps.filter(p => !p.done);
+  if (!solved.length) return unfinished.length ? null : { winners: [], early: false };
+  const bestRows = Math.min(...solved.map(p => p.rows));
+  let best = solved.filter(p => p.rows === bestRows);
+  if (tie === "time") { const bt = Math.min(...best.map(p => p.time)); best = best.filter(p => p.time === bt); }
+  // Can anyone still playing beat (or tie, in shared-win mode) the best result?
+  for (const u of unfinished) {
+    const next = u.rows + 1;                       // best row they could still solve on
+    if (next < bestRows) return null;
+    if (next === bestRows && tie === "draw") return null;
+    // next === bestRows with time tiebreak: they'd be slower than someone already finished
   }
-  // Early finish: one player solved and the other can no longer beat (or tie) them
-  const early = (x, y, key) => {
-    if (!(x.done && x.solved) || y.done) return null;
-    const best = y.rows + 1;                // best row y could still solve on
-    if (best < x.rows) return null;         // y can still win outright
-    if (best === x.rows && tie === "draw") return null; // y can still draw
-    return key;                              // same rows but x already faster, or y can't catch up
-  };
-  return early(a, b, "a") || early(b, a, "b");
+  return { winners: best.map(p => p.id), early: unfinished.length > 0 };
 }
 
 /* =========================================================
    BUILD UI
    ========================================================= */
-function buildBoards() {
+function buildMyBoard() {
   const mb = $("myBoard"); mb.innerHTML = "";
   for (let r = 0; r < MAX_ROWS; r++) {
     const row = document.createElement("div"); row.className = "brow";
     for (let c = 0; c < 5; c++) { const t = document.createElement("div"); t.className = "tile"; t.dataset.state = "empty"; row.appendChild(t); }
     mb.appendChild(row);
   }
-  const ob = $("oppBoard"); ob.innerHTML = "";
-  for (let r = 0; r < MAX_ROWS; r++) {
-    const row = document.createElement("div"); row.className = "orow";
-    for (let c = 0; c < 5; c++) { const t = document.createElement("div"); t.className = "otile"; t.dataset.state = "empty"; row.appendChild(t); }
-    ob.appendChild(row);
-  }
 }
+
+function oppIds() { return S.parts.filter(id => id !== S.myId); }
+
+function buildOpps() {
+  const wrap = $("opps"); wrap.innerHTML = ""; S.cards = {};
+  if (S.mode === "solo") { wrap.style.display = "none"; return; }
+  wrap.style.display = "";
+  oppIds().forEach(id => {
+    const card = document.createElement("div"); card.className = "opp-card";
+    const head = document.createElement("div"); head.className = "opp-head";
+    head.innerHTML = '<span class="dot" style="background:' + pcolor(id) + '"></span><span class="opp-name">' + esc(pname(id)) + '</span><span class="opp-wins"></span>';
+    const board = document.createElement("div"); board.className = "opp-board";
+    for (let r = 0; r < MAX_ROWS; r++) {
+      const row = document.createElement("div"); row.className = "orow";
+      for (let c = 0; c < 5; c++) { const t = document.createElement("div"); t.className = "otile"; t.dataset.state = "empty"; row.appendChild(t); }
+      board.appendChild(row);
+    }
+    const pill = document.createElement("div"); pill.className = "status-pill";
+    card.append(head, board, pill);
+    wrap.appendChild(card);
+    S.cards[id] = { card, board, pill, wins: head.querySelector(".opp-wins") };
+  });
+  sizeOpps();
+  oppIds().forEach(renderOpp);
+}
+
+function sizeOpps() {
+  const n = oppIds().length, wrap = $("opps");
+  let o, cols;
+  if (isMobile()) {
+    if (n <= 1) { o = 9; cols = 1; } else if (n <= 4) { o = 8; cols = n; } else { o = 6; cols = 4; }
+  } else {
+    if (n <= 1) { o = 24; cols = 1; } else if (n <= 3) { o = 16; cols = 1; } else { o = 13; cols = 2; }
+  }
+  wrap.style.setProperty("--o", o + "px");
+  wrap.style.setProperty("--cols", cols);
+  $("arena").classList.toggle("many", n >= 5);
+}
+window.addEventListener("resize", () => { if (onScreen("game")) { sizeOpps(); oppIds().forEach(renderOpp); } });
+
 function buildKeyboard() {
   const kb = $("keyboard"); kb.innerHTML = "";
   const rows = ["qwertyuiop", "-asdfghjkl-", "Ezxcvbnm<"];
@@ -446,48 +505,60 @@ function updateKeys(guess, pat) {
   }
 }
 
-function renderOpp() {
-  if (S.mode === "solo") return;
-  const ob = $("oppBoard");
-  for (let r = 0; r < MAX_ROWS; r++) {
-    const tiles = ob.children[r].children;
-    const pat = S.opp.patterns[r];
+function renderOpp(id) {
+  const el = S.cards[id], r = S.rs[id];
+  if (!el || !r) return;
+  for (let row = 0; row < MAX_ROWS; row++) {
+    const tiles = el.board.children[row].children;
+    const pat = r.patterns[row];
     for (let c = 0; c < 5; c++) {
       let st = "empty";
       if (pat) st = STATES[pat[c]];
-      else if (r === S.opp.patterns.length && !S.opp.done && c < S.opp.typing) st = "tbd";
+      else if (row === r.patterns.length && !r.done && c < r.typing) st = "tbd";
       if (tiles[c].dataset.state !== st) {
-        if (pat && tiles[c].dataset.state !== st) { tiles[c].classList.remove("flip"); void tiles[c].offsetWidth; tiles[c].classList.add("flip"); }
+        if (pat) { tiles[c].classList.remove("flip"); void tiles[c].offsetWidth; tiles[c].classList.add("flip"); }
         tiles[c].dataset.state = st;
       }
     }
   }
-  const pill = $("oppStatus");
+  const m = isMobile(), pill = el.pill;
   pill.className = "status-pill";
-  if (S.opp.solved) { pill.textContent = "Solved in " + S.opp.rows + " ✓"; pill.classList.add("ok"); }
-  else if (S.opp.done) { pill.textContent = "Out of guesses"; pill.classList.add("bad"); }
-  else pill.textContent = "Row " + Math.min(S.opp.rows + 1, 6) + " of 6";
+  el.card.classList.toggle("solved", r.solved);
+  el.card.classList.toggle("left", r.left);
+  if (r.left) pill.textContent = "Left";
+  else if (r.solved) { pill.textContent = m ? "✓ " + r.rows : "Solved in " + r.rows + " ✓"; pill.classList.add("ok"); }
+  else if (r.done) { pill.textContent = m ? "✗" : "Out of guesses"; pill.classList.add("bad"); }
+  else pill.textContent = m ? "Row " + Math.min(r.rows + 1, 6) : "Row " + Math.min(r.rows + 1, 6) + " of 6";
+  const p = player(id);
+  el.wins.textContent = p && p.score && S.settings.target > 1 ? "🏆" + p.score : "";
 }
 
 function renderScore() {
-  $("sbMeName").textContent = S.name || "You";
-  $("sbOppName").textContent = S.mode === "solo" ? "" : (S.oppName || "Opponent");
-  $("sbMe").textContent = S.score.me;
-  $("sbOpp").textContent = S.mode === "solo" ? "" : S.score.opp;
-  document.querySelectorAll("#scoreline span")[2].style.display = S.mode === "solo" ? "none" : "";
-  const firstTo = S.settings.target;
-  $("roundInfo").textContent = S.mode === "solo"
-    ? "Practice · " + S.score.me + " solved"
-    : "Round " + S.round + " · " + (firstTo === 1 ? "Best of 1" : "First to " + firstTo) + (S.settings.hard ? " · Hard" : "");
-  if (S.mode === "solo") $("sbMe").textContent = "";
-  $("oppName").textContent = S.oppName || "Opponent";
-  $("oppCard").style.display = S.mode === "solo" ? "none" : "";
+  const sl = $("scoreline");
+  const me = player(S.myId);
+  const target = S.settings.target;
+  if (S.mode === "solo") {
+    sl.innerHTML = '<span class="nm">' + esc(S.name) + "</span>";
+    $("roundInfo").textContent = "Practice · " + S.score + " solved";
+    return;
+  }
+  const opp = oppIds();
+  if (S.parts.length === 2 && opp.length === 1) {
+    const o = player(opp[0]);
+    sl.innerHTML = '<span class="nm">' + esc(S.name) + '</span><span class="sc">' + (me ? me.score : 0) + '</span><span style="color:var(--muted)">–</span><span class="sc">' + (o ? o.score : 0) + '</span><span class="nm">' + esc(o ? o.name : "Opponent") + "</span>";
+  } else {
+    const leader = [...S.players].sort((a, b) => b.score - a.score)[0];
+    sl.innerHTML = '<span class="nm">You</span><span class="sc">' + (me ? me.score : 0) + "</span>" +
+      (leader && leader.score > 0 && leader.id !== S.myId ? '<span class="nm" style="margin-left:6px">Lead: ' + esc(leader.name) + " " + leader.score + "</span>" : "");
+  }
+  $("roundInfo").textContent = "Round " + S.round + " · " + (target === 1 ? "1 round" : "First to " + target) +
+    (S.parts.length > 2 && !isMobile() ? " · " + S.parts.length + " players" : "") + (S.settings.hard ? " · Hard" : "");
 }
 
 /* =========================================================
    INPUT
    ========================================================= */
-function canType() { return S.playing && !S.done && !S.revealing && !S.roundOver && $("screen-game").classList.contains("active"); }
+function canType() { return S.playing && !S.done && !S.revealing && !S.roundOver && onScreen("game") && !$("modalOverlay").classList.contains("show"); }
 
 function handleKey(k) {
   if (!canType()) return;
@@ -498,7 +569,7 @@ function handleKey(k) {
 document.addEventListener("keydown", e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (document.activeElement && document.activeElement.tagName === "INPUT") return;
-  if (!$("screen-game").classList.contains("active")) return;
+  if (!onScreen("game")) return;
   if (e.key === "Enter") { e.preventDefault(); handleKey("enter"); }
   else if (e.key === "Backspace") { e.preventDefault(); handleKey("back"); }
   else if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toLowerCase());
@@ -514,7 +585,7 @@ let lastTyping = -1;
 function sendTyping() {
   if (S.cur.length === lastTyping) return;
   lastTyping = S.cur.length;
-  send({ t: "typing", n: S.cur.length });
+  netSend({ t: "typing", n: S.cur.length });
 }
 
 function submitGuess() {
@@ -525,13 +596,14 @@ function submitGuess() {
 
   const pat = evaluate(g, S.word);
   const rowIdx = S.guesses.length;
-  S.guesses.push(g); S.patterns.push(pat); S.cur = ""; lastTyping = -1;
+  S.guesses.push(g); S.patterns.push(pat); S.cur = ""; lastTyping = -1;   // same arrays as S.rs[myId]
   S.solved = pat.every(p => p === 2);
   S.done = S.solved || S.guesses.length >= MAX_ROWS;
   if (S.done) { S.time = Date.now() - S.startTime; stopTimer(); }
+  const mine = S.rs[S.myId];
+  mine.rows = S.guesses.length; mine.done = S.done; mine.solved = S.solved; mine.time = S.time;
 
-  // tell opponent straight away (colours show on their side live)
-  send({ t: "prog", g, pat, rows: S.guesses.length, done: S.done, solved: S.solved, time: S.time });
+  netSend({ t: "prog", g, pat, rows: S.guesses.length, done: S.done, solved: S.solved, time: S.time });
 
   revealRow(rowIdx, g, pat).then(() => {
     if (S.solved) {
@@ -568,11 +640,10 @@ function afterReveal(fn) { if (S.revealing) S.queue.push(fn); else fn(); }
 
 function updateMyStatus() {
   const el = $("myStatus");
-  if (S.roundOver || !S.done) { el.textContent = ""; return; }
-  if (S.mode === "solo") { el.textContent = ""; return; }
-  el.textContent = S.solved
-    ? "Solved in " + S.guesses.length + "! Waiting for " + (S.oppName || "opponent") + "…"
-    : "Out of guesses — waiting for " + (S.oppName || "opponent") + "…";
+  if (S.roundOver || !S.done || S.mode === "solo") { el.textContent = ""; return; }
+  const others = oppIds().filter(id => S.rs[id] && !S.rs[id].done && !S.rs[id].left).length;
+  const who = others === 1 ? pname(oppIds().find(id => !S.rs[id].done && !S.rs[id].left)) : "the others";
+  el.textContent = (S.solved ? "Solved in " + S.guesses.length + "!" : "Out of guesses —") + " Waiting for " + who + "…";
 }
 
 /* =========================================================
@@ -593,19 +664,25 @@ function pickWord() {
 
 // Host (or solo) starts a new round
 function startRound() {
-  if (S.matchOver) { S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false; }
+  if (S.mode === "solo") { S.round++; beginRound(pickWord(), ["me"]); return; }
+  if (S.players.length < 2) { toast("Need at least 2 players"); return; }
+  if (S.matchOver) { S.players.forEach(p => p.score = 0); S.round = 0; S.matchOver = false; }
+  S.inGame = true;
   S.round++;
   const w = pickWord();
-  send({ t: "start", w: enc(w), round: S.round, settings: S.settings, score: { host: S.score.me, guest: S.score.opp } });
-  beginRound(w);
+  const parts = S.players.map(p => p.id);
+  broadcast({ t: "start", w: enc(w), round: S.round, settings: S.settings, players: S.players, parts });
+  beginRound(w, parts);
 }
 
-function beginRound(word) {
+function beginRound(word, parts) {
   closeModal();
-  S.word = word; S.guesses = []; S.patterns = []; S.cur = ""; lastTyping = -1;
+  S.word = word; S.parts = parts.slice(); S.rs = {};
+  S.parts.forEach(id => S.rs[id] = freshRS());
+  const mine = S.rs[S.myId];
+  S.guesses = mine.guesses; S.patterns = mine.patterns; S.cur = ""; lastTyping = -1;
   S.done = false; S.solved = false; S.time = 0; S.roundOver = false; S.playing = false; S.revealing = false; S.queue = [];
-  S.opp = freshOpp();
-  buildBoards(); buildKeyboard(); renderScore(); renderOpp();
+  buildMyBoard(); buildKeyboard(); buildOpps(); renderScore();
   $("myStatus").textContent = ""; $("timer").textContent = "0:00";
   show("game");
   countdown(() => { S.playing = true; S.startTime = Date.now(); startTimer(); });
@@ -624,107 +701,166 @@ function countdown(cb) {
   step();
 }
 
-function myState() { return { rows: S.guesses.length, done: S.done, solved: S.solved, time: S.time }; }
-function oppState() { return { rows: S.opp.rows, done: S.opp.done, solved: S.opp.solved, time: S.opp.time }; }
-
-// Host-only (and solo): check if the round is decided
+// Host (and solo): check whether the round is decided
 function checkEnd() {
   if (S.roundOver) return;
   if (S.mode === "solo") {
     if (!S.done) return;
     S.roundOver = true;
-    if (S.solved) S.score.me++;
-    setTimeout(() => showSoloResult(), 900);
+    if (S.solved) S.score++;
+    setTimeout(showSoloResult, 900);
     return;
   }
-  const a = myState(), b = oppState();
-  const r = judge(a, b, S.settings.tie);
-  if (!r) return;
-  const early = !(a.done && b.done);
-  if (r === "a") S.score.me++;
-  if (r === "b") S.score.opp++;
-  const target = S.settings.target;
-  S.matchOver = S.score.me >= target || S.score.opp >= target;
-  const payload = { t: "result", winner: r, a, b, early, word: enc(S.word), score: { host: S.score.me, guest: S.score.opp }, matchOver: S.matchOver };
-  send(payload);
-  finishRound(r === "a" ? "me" : r === "b" ? "opp" : "draw", a, b, early);
+  if (S.mode !== "host") return;
+  const ps = S.parts.map(id => ({ id, ...S.rs[id] }));
+  const res = judgeAll(ps, S.settings.tie);
+  if (!res) return;
+  // A point for each round winner — unless everyone tied (nobody beat anybody)
+  const everyone = res.winners.length === S.parts.length;
+  if (!everyone) res.winners.forEach(id => { const p = player(id); if (p) p.score++; });
+  S.matchOver = S.players.some(p => p.score >= S.settings.target);
+  const states = {};
+  S.parts.forEach(id => { const r = S.rs[id]; states[id] = { rows: r.rows, done: r.done, solved: r.solved, time: r.time }; });
+  broadcast({ t: "result", winners: res.winners, early: res.early, states, word: enc(S.word), players: S.players, matchOver: S.matchOver });
+  finishRound(res.winners, res.early);
 }
 
-// Both sides: show result. me/opp are from this player's perspective.
-function finishRound(outcome, me, opp, early) {
+function finishRound(winners, early) {
   S.roundOver = true; S.playing = false; stopTimer();
   updateMyStatus();
-  afterReveal(() => setTimeout(() => showResult(outcome, me, opp, early), 700));
+  oppIds().forEach(renderOpp);
+  afterReveal(() => setTimeout(() => showResult(winners, early), 700));
 }
 
 /* =========================================================
    RESULT MODALS
    ========================================================= */
-function gridHTML(guesses, patterns, showLetters) {
-  let h = '<div class="rgrid">';
+function gridHTML(guesses, patterns, small) {
+  let h = '<div class="rgrid' + (small ? " sm" : "") + '">';
   for (let r = 0; r < MAX_ROWS; r++) {
     h += '<div class="rr">';
     for (let c = 0; c < 5; c++) {
-      if (patterns[r]) h += '<div class="rt s' + patterns[r][c] + '">' + (showLetters && guesses[r] ? guesses[r][c] : "") + "</div>";
+      if (patterns[r]) h += '<div class="rt s' + patterns[r][c] + '">' + (guesses[r] ? guesses[r][c] : "") + "</div>";
       else h += '<div class="rt"></div>';
     }
     h += "</div>";
   }
   return h + "</div>";
 }
-function rowsText(st) { return st.solved ? st.rows + "/6" : (st.done ? "X/6" : "unfinished"); }
+function resultText(r) {
+  if (r.left) return "left";
+  if (r.solved) return r.rows + "/6 · " + fmtTime(r.time);
+  if (r.done) return "X/6";
+  return "—";
+}
+function rankParts(winners) {
+  const score = id => {
+    const r = S.rs[id];
+    if (winners.includes(id)) return [0, r.rows, r.time];
+    if (r.solved) return [1, r.rows, r.time];
+    if (r.done) return [2, 0, 0];
+    return [3, -r.rows, 0];
+  };
+  const ids = S.parts.slice().sort((a, b) => {
+    const A = score(a), B = score(b);
+    for (let i = 0; i < 3; i++) if (A[i] !== B[i]) return A[i] - B[i];
+    return 0;
+  });
+  // places: winners share 1st; solved players ranked after; everyone else unplaced
+  let place = winners.length ? winners.length + 1 : 1;
+  return ids.map(id => {
+    const r = S.rs[id];
+    let pl = "";
+    if (winners.includes(id)) pl = 1;
+    else if (r.solved) pl = place++;
+    return { id, pl };
+  });
+}
+function medal(pl) { return pl === 1 ? "🥇" : pl === 2 ? "🥈" : pl === 3 ? "🥉" : pl ? pl : "–"; }
+function who(id) { return id === S.myId ? "You" : esc(pname(id)); }
 
-function reasonText(outcome, me, opp, early) {
-  const on = esc(S.oppName || "Opponent");
-  if (early) {
-    if (outcome === "me") return "You solved it in <b>" + me.rows + "</b> " + (me.rows === 1 ? "row" : "rows") + " — " + on + " couldn't beat that anymore.";
-    return on + " solved it in <b>" + opp.rows + "</b> " + (opp.rows === 1 ? "row" : "rows") + " — you couldn't beat that anymore.";
-  }
-  if (!me.solved && !opp.solved) return "Neither of you found the word.";
-  if (me.solved && !opp.solved) return "You solved it in <b>" + me.rows + "</b> — " + on + " ran out of guesses.";
-  if (opp.solved && !me.solved) return on + " solved it in <b>" + opp.rows + "</b> — you ran out of guesses.";
-  if (me.rows !== opp.rows) return "You: <b>" + me.rows + "</b> rows · " + on + ": <b>" + opp.rows + "</b> rows. Fewer rows wins!";
-  if (outcome === "draw") return "Both solved it in <b>" + me.rows + "</b> rows — it's a tie.";
-  return "Both solved it in <b>" + me.rows + "</b> rows — " + (outcome === "me" ? "you were" : on + " was") + " faster (" + fmtTime(outcome === "me" ? me.time : opp.time) + " vs " + fmtTime(outcome === "me" ? opp.time : me.time) + ").";
+function reasonText(winners, early) {
+  const n = S.parts.length;
+  if (!winners.length) return n === 2 ? "Neither of you found the word." : "Nobody found the word.";
+  const rows = S.rs[winners[0]].rows;
+  if (winners.length === n) return (n === 2 ? "Both of you" : "Everyone") + " solved it in <b>" + rows + "</b> " + rowsWord(rows) + " — it's a tie.";
+  const names = winners.map(who);
+  const list = names.length === 1 ? names[0] : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+  let t = list + " solved it in <b>" + rows + "</b> " + rowsWord(rows);
+  if (winners.length > 1) return t + " — shared win!";
+  if (early) return t + " — " + (n === 2 ? (winners[0] === S.myId ? who(oppIds()[0]) : "you") + " couldn't" : "nobody else could") + " beat that.";
+  const sameRows = S.parts.filter(id => id !== winners[0] && S.rs[id].solved && S.rs[id].rows === rows);
+  if (sameRows.length) return t + ", fastest at <b>" + fmtTime(S.rs[winners[0]].time) + "</b>.";
+  return t + " — fewest rows wins!";
 }
 
-function showResult(outcome, me, opp, early) {
-  const title = outcome === "me" ? "You win! 🎉" : outcome === "opp" ? "You lose" : "Draw";
-  const cls = outcome === "me" ? "win" : outcome === "opp" ? "lose" : "draw";
+function showResult(winners, early) {
+  const n = S.parts.length;
+  const iWon = winners.includes(S.myId);
+  const everyone = winners.length === n || winners.length === 0;
+  let title, cls;
+  if (everyone) { title = "Draw"; cls = "draw"; }
+  else if (iWon) { title = winners.length > 1 ? "Shared win! 🤝" : "You win! 🎉"; cls = "win"; }
+  else if (n === 2) { title = "You lose"; cls = "lose"; }
+  else { title = (winners.length > 1 ? "Shared win" : esc(pname(winners[0])) + " wins"); cls = "lose"; }
+
   let h = '<div class="res-title ' + cls + '">' + title + "</div>";
-  h += '<div class="res-reason">' + reasonText(outcome, me, opp, early) + "</div>";
+  h += '<div class="res-reason">' + reasonText(winners, early) + "</div>";
   h += '<div class="answer">' + S.word.split("").map(c => "<span>" + c + "</span>").join("") + "</div>";
-  h += '<div class="res-grids">';
-  h += '<div class="res-col"><div class="who">' + esc(S.name || "You") + '</div><div class="stat">' + rowsText(me) + (me.solved ? " · " + fmtTime(me.time) : "") + "</div>" + gridHTML(S.guesses, S.patterns, true) + "</div>";
-  h += '<div class="res-col"><div class="who">' + esc(S.oppName || "Opponent") + '</div><div class="stat">' + rowsText(opp) + (opp.solved ? " · " + fmtTime(opp.time) : "") + "</div>" + gridHTML(S.opp.guesses, S.opp.patterns, true) + "</div>";
+
+  // Standings
+  const showWins = S.settings.target > 1;
+  h += '<div class="stand"><div class="st-head"><span></span><span>Player</span><span>This round</span><span>' + (showWins ? "Wins" : "") + "</span></div>";
+  rankParts(winners).forEach(({ id, pl }) => {
+    const p = player(id), r = S.rs[id];
+    h += '<div class="st-row' + (winners.includes(id) && !everyone ? " win" : "") + (id === S.myId ? " me" : "") + '">' +
+      '<span class="st-place">' + medal(pl) + "</span>" +
+      '<span class="st-name"><i class="dot" style="background:' + pcolor(id) + '"></i><span>' + esc(p ? p.name : "Player") + (id === S.myId ? " (you)" : "") + "</span></span>" +
+      '<span class="st-res">' + resultText(r) + "</span>" +
+      '<span class="st-wins">' + (showWins && p ? p.score : "") + "</span></div>";
+  });
   h += "</div>";
-  h += '<div class="big-score"><div><small>' + esc(S.name || "You") + "</small>" + S.score.me + '</div><div class="dash">–</div><div><small>' + esc(S.oppName || "Opponent") + "</small>" + S.score.opp + "</div></div>";
+
+  // Boards
+  const small = n > 2;
+  h += '<div class="section-label">Boards</div><div class="res-grids">';
+  rankParts(winners).forEach(({ id }) => {
+    const r = S.rs[id];
+    h += '<div class="res-col"><div class="who">' + who(id) + "</div>" + gridHTML(r.guesses, r.patterns, small) + "</div>";
+  });
+  h += "</div>";
+
   if (S.matchOver) {
-    const iWon = S.score.me > S.score.opp;
-    h += '<div class="match-banner">' + (iWon ? "🏆 You won the match!" : "🏆 " + esc(S.oppName || "Opponent") + " won the match") + "</div>";
+    const top = Math.max(...S.players.map(p => p.score));
+    const champs = S.players.filter(p => p.score === top);
+    const meChamp = champs.some(p => p.id === S.myId);
+    let txt;
+    if (champs.length > 1) txt = "🏆 " + champs.map(p => p.id === S.myId ? "You" : esc(p.name)).join(" & ") + " share the match!";
+    else txt = meChamp ? "🏆 You won the match!" : "🏆 " + esc(champs[0].name) + " won the match";
+    h += '<div class="match-banner">' + txt + "</div>";
   }
   if (S.mode === "host") {
     h += '<button class="btn primary" id="nextBtn">' + (S.matchOver ? "Rematch" : "Next round") + "</button>";
     h += '<button class="btn" id="toLobbyBtn">Back to lobby</button>';
   } else {
-    h += '<div class="hint">Waiting for ' + esc(S.oppName || "the host") + " to start the " + (S.matchOver ? "rematch" : "next round") + "…</div>";
+    h += '<div class="hint">Waiting for ' + esc(pname("host")) + " to start the " + (S.matchOver ? "rematch" : "next round") + "…</div>";
     h += '<button class="btn" id="resLeaveBtn">Leave</button>';
   }
   openModal(h);
-  if ($("nextBtn")) $("nextBtn").onclick = () => { if (!S.conn || !S.conn.open) return toast("Opponent disconnected"); startRound(); };
-  if ($("toLobbyBtn")) $("toLobbyBtn").onclick = () => { S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false; send({ t: "toLobby" }); sendLobby(); closeModal(); enterLobby(); };
-  if ($("resLeaveBtn")) $("resLeaveBtn").onclick = leaveAll;
+  if ($("nextBtn")) $("nextBtn").onclick = startRound;
+  if ($("toLobbyBtn")) $("toLobbyBtn").onclick = hostToLobby;
+  if ($("resLeaveBtn")) $("resLeaveBtn").onclick = () => leaveAll();
 }
 
 function showSoloResult() {
   let h = '<div class="res-title ' + (S.solved ? "win" : "lose") + '">' + (S.solved ? "Solved in " + S.guesses.length + "!" : "Out of guesses") + "</div>";
   h += '<div class="answer">' + S.word.split("").map(c => "<span>" + c + "</span>").join("") + "</div>";
-  h += '<div class="res-grids"><div class="res-col">' + gridHTML(S.guesses, S.patterns, true) + "</div></div>";
-  h += '<div class="res-reason">Words solved this session: <b>' + S.score.me + "</b> of " + S.round + "</div>";
+  h += '<div class="res-grids"><div class="res-col">' + gridHTML(S.guesses, S.patterns, false) + "</div></div>";
+  h += '<div class="res-reason">Words solved this session: <b>' + S.score + "</b> of " + S.round + "</div>";
   h += '<button class="btn primary" id="soloNext">New word</button><button class="btn" id="soloHome">Home</button>';
   openModal(h);
   $("soloNext").onclick = startRound;
-  $("soloHome").onclick = leaveAll;
+  $("soloHome").onclick = () => leaveAll();
 }
 
 function openModal(html) { $("modal").innerHTML = html; $("modalOverlay").classList.add("show"); }
@@ -732,8 +868,16 @@ function closeModal() { $("modalOverlay").classList.remove("show"); }
 
 /* =========================================================
    NETWORKING (PeerJS — free public broker, no server needed)
+   The host is the hub: every guest connects to the host,
+   and the host relays progress to everyone else.
    ========================================================= */
-function send(obj) { if (S.conn && S.conn.open) { try { S.conn.send(obj); } catch (e) {} } }
+function broadcast(obj, exceptId) {
+  S.conns.forEach((c, id) => { if (id !== exceptId && c.open) { try { c.send(obj); } catch (e) {} } });
+}
+function netSend(obj) {
+  if (S.mode === "host") broadcast({ ...obj, id: "host" });
+  else if (S.mode === "guest" && S.conn && S.conn.open) { try { S.conn.send(obj); } catch (e) {} }
+}
 
 function genCode() { let c = ""; for (let i = 0; i < 4; i++) c += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return c; }
 
@@ -743,16 +887,19 @@ function getName() {
   store("wduel-name", n);
   return n;
 }
-
 function checkPeerLib() {
   if (typeof Peer === "undefined") { toast("Couldn't load the online library — check your internet", 2600); return false; }
   return true;
 }
+function resetMatch() { S.players.forEach(p => p.score = 0); S.round = 0; S.matchOver = false; S.inGame = false; }
 
+/* ---------- Host ---------- */
 function createRoom(retry = 0) {
   const n = retry ? S.name : getName(); if (!n) return;
   if (!checkPeerLib()) return;
-  S.name = n; S.mode = "host"; S.oppName = ""; S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false;
+  S.name = n; S.mode = "host"; S.myId = "host"; S.conns = new Map();
+  S.players = [{ id: "host", name: n, score: 0, c: 0 }];
+  resetMatch();
   S.code = genCode();
   $("createBtn").disabled = true; $("createBtn").textContent = "Creating…";
   const peer = new Peer(PEER_PREFIX + S.code);
@@ -762,14 +909,13 @@ function createRoom(retry = 0) {
     enterLobby();
   });
   peer.on("connection", conn => {
-    if (S.conn && S.conn.open) {
-      conn.on("open", () => { conn.send({ t: "full" }); setTimeout(() => conn.close(), 400); });
-      return;
-    }
-    S.conn = conn;
-    conn.on("data", onData);
-    conn.on("close", onDisconnect);
-    conn.on("error", onDisconnect);
+    conn.on("open", () => {
+      if (S.conns.size >= MAX_PLAYERS - 1) { try { conn.send({ t: "full" }); } catch (e) {} setTimeout(() => conn.close(), 400); return; }
+      S.conns.set(conn.peer, conn);
+    });
+    conn.on("data", d => hostData(conn.peer, d));
+    conn.on("close", () => dropPlayer(conn.peer));
+    conn.on("error", () => dropPlayer(conn.peer));
   });
   peer.on("error", err => {
     if (err.type === "unavailable-id" && retry < 5) { peer.destroy(); createRoom(retry + 1); return; }
@@ -780,109 +926,177 @@ function createRoom(retry = 0) {
   peer.on("disconnected", () => { try { peer.reconnect(); } catch (e) {} });
 }
 
+function hostData(id, d) {
+  if (!S.conns.has(id)) return;
+  switch (d.t) {
+    case "hello": {
+      if (player(id)) return;
+      const used = S.players.map(p => p.c);
+      let c = 0; while (used.includes(c)) c++;
+      const name = String(d.name || "Player").slice(0, 16);
+      S.players.push({ id, name, score: 0, c });
+      sendLobby();
+      if (onScreen("lobby")) renderLobby(); else renderScore();
+      toast(name + " joined" + (S.inGame ? " — they'll play next round" : "!"));
+      break;
+    }
+    case "typing":
+      if (!S.rs[id] || S.roundOver) return;
+      S.rs[id].typing = d.n; renderOpp(id);
+      broadcast({ t: "typing", id, n: d.n }, id);
+      break;
+    case "prog":
+      if (!S.rs[id] || S.roundOver) return;
+      applyProg(id, d);
+      broadcast({ ...d, id }, id);
+      afterReveal(checkEnd);
+      break;
+  }
+}
+
+function dropPlayer(id) {
+  const had = S.conns.delete(id);
+  const p = player(id);
+  if (!p) return;
+  S.players = S.players.filter(x => x.id !== id);
+  toast(p.name + " left", 2000);
+  broadcast({ t: "left", id });
+  sendLobby();
+  handleLeft(id);
+}
+
+function sendLobby() {
+  broadcast({ t: "lobby", players: S.players, settings: S.settings, inGame: S.inGame });
+}
+
+function hostToLobby(reason) {
+  resetMatch();
+  broadcast({ t: "toLobby", reason: reason || "" });
+  sendLobby();
+  S.playing = false; stopTimer(); closeModal();
+  $("countOverlay").classList.remove("show");
+  enterLobby();
+  if (reason) toast(reason, 2400);
+}
+
+/* ---------- Guest ---------- */
 function joinRoom() {
   const n = getName(); if (!n) return;
   const code = $("codeInput").value.trim().toUpperCase();
   if (code.length !== 4) { toast("Enter the 4-letter room code"); return; }
   if (!checkPeerLib()) return;
-  S.name = n; S.mode = "guest"; S.code = code; S.oppName = ""; S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false;
+  S.name = n; S.mode = "guest"; S.code = code; S.players = []; resetMatch();
   $("joinBtn").disabled = true; $("joinBtn").textContent = "…";
   const peer = new Peer();
   S.peer = peer;
   const resetBtn = () => { $("joinBtn").disabled = false; $("joinBtn").textContent = "Join"; };
-  peer.on("open", () => {
+  peer.on("open", id => {
+    S.myId = id;
     const conn = peer.connect(PEER_PREFIX + code, { reliable: true });
     S.conn = conn;
-    const to = setTimeout(() => { if (!conn.open) { toast("Room not found", 2200); resetBtn(); leaveAll(true); } }, 9000);
-    conn.on("open", () => { clearTimeout(to); resetBtn(); conn.send({ t: "hello", name: S.name }); enterLobby(); });
-    conn.on("data", onData);
-    conn.on("close", onDisconnect);
-    conn.on("error", onDisconnect);
+    const to = setTimeout(() => { if (!conn.open) { toast("Room not found", 2200); resetBtn(); leaveAll(); } }, 9000);
+    conn.on("open", () => { clearTimeout(to); resetBtn(); conn.send({ t: "hello", name: S.name }); });
+    conn.on("data", guestData);
+    conn.on("close", onHostGone);
+    conn.on("error", onHostGone);
   });
   peer.on("error", err => {
     resetBtn();
-    if (err.type === "peer-unavailable") { toast("Room " + code + " not found", 2400); leaveAll(true); return; }
+    if (err.type === "peer-unavailable") { toast("Room " + code + " not found", 2400); leaveAll(); return; }
     toast("Connection problem: " + err.type, 2600);
   });
 }
 
-function onData(d) {
+function guestData(d) {
   switch (d.t) {
-    case "hello": // host receives guest
-      S.oppName = String(d.name || "Player").slice(0, 16);
-      sendLobby(); renderLobby();
-      toast(S.oppName + " joined!");
-      break;
-    case "lobby": // guest receives lobby state
-      S.oppName = d.host; S.settings = d.settings;
-      S.score = { me: d.score.guest, opp: d.score.host };
-      renderLobby();
+    case "lobby":
+      S.players = d.players; S.settings = d.settings; S.inGame = d.inGame;
+      if (onScreen("home")) enterLobby();
+      else if (onScreen("lobby")) renderLobby();
+      else { renderScore(); oppIds().forEach(renderOpp); }
       break;
     case "full":
-      toast("That room is already full", 2400); leaveAll(true);
+      toast("That room is full (8 players)", 2400); leaveAll();
       break;
     case "start":
-      S.settings = d.settings; S.round = d.round; S.matchOver = false;
-      S.score = { me: d.score.guest, opp: d.score.host };
-      beginRound(dec(d.w));
+      S.settings = d.settings; S.round = d.round; S.matchOver = false; S.inGame = true;
+      S.players = d.players;
+      beginRound(dec(d.w), d.parts);
       break;
     case "typing":
-      S.opp.typing = d.n; renderOpp();
+      if (!S.rs[d.id] || d.id === S.myId || S.roundOver) return;
+      S.rs[d.id].typing = d.n; renderOpp(d.id);
       break;
     case "prog":
-      S.opp.guesses.push(d.g); S.opp.patterns.push(d.pat);
-      S.opp.rows = d.rows; S.opp.done = d.done; S.opp.solved = d.solved; S.opp.time = d.time; S.opp.typing = 0;
-      renderOpp();
-      if (d.solved && !S.done) toast(S.oppName + " solved it in " + d.rows + "!", 1800);
-      if (S.mode === "host") afterReveal(checkEnd);
+      if (!S.rs[d.id] || d.id === S.myId || S.roundOver) return;
+      applyProg(d.id, d);
       break;
-    case "result": { // guest receives result
-      if (S.roundOver) break;
-      S.score = { me: d.score.guest, opp: d.score.host };
-      S.matchOver = d.matchOver;
-      if (!S.word) S.word = dec(d.word);
-      const outcome = d.winner === "b" ? "me" : d.winner === "a" ? "opp" : "draw";
-      // use our own exact local state for "me"
-      finishRound(outcome, myState(), d.a, d.early);
+    case "result": {
+      if (S.roundOver || !S.parts.includes(S.myId)) { S.players = d.players; return; }
+      S.players = d.players; S.matchOver = d.matchOver;
+      for (const id in d.states) if (id !== S.myId && S.rs[id]) Object.assign(S.rs[id], d.states[id]);
+      finishRound(d.winners, d.early);
       break;
     }
+    case "left":
+      S.players = S.players.filter(p => p.id !== d.id);
+      handleLeft(d.id);
+      break;
     case "toLobby":
-      S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false;
-      closeModal(); enterLobby();
+      resetMatch(); S.playing = false; stopTimer(); closeModal();
+      $("countOverlay").classList.remove("show");
+      enterLobby();
+      if (d.reason) toast(d.reason, 2400);
       break;
   }
 }
 
-function onDisconnect() {
-  if (S.mode === "host") {
-    if (!S.oppName) return;
-    toast((S.oppName || "Opponent") + " left the room", 2400);
-    S.conn = null; S.oppName = ""; S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false;
-    S.playing = false; stopTimer(); closeModal(); enterLobby();
-  } else if (S.mode === "guest") {
-    toast("Disconnected from the room", 2400);
-    leaveAll(true);
-  }
+function onHostGone() {
+  if (S.mode !== "guest") return;
+  toast("Disconnected from the room", 2400);
+  leaveAll();
 }
 
-function sendLobby() {
-  send({ t: "lobby", host: S.name, settings: S.settings, score: { host: S.score.me, guest: S.score.opp } });
+/* ---------- Shared ---------- */
+function applyProg(id, d) {
+  const r = S.rs[id]; if (!r) return;
+  r.guesses.push(d.g); r.patterns.push(d.pat);
+  r.rows = d.rows; r.done = d.done; r.solved = d.solved; r.time = d.time; r.typing = 0;
+  renderOpp(id);
+  if (d.solved && !S.done) toast(pname(id) + " solved it in " + d.rows + "!", 1800);
+  updateMyStatus();
+}
+
+function handleLeft(id) {
+  if (S.parts.includes(id)) {
+    if (S.rs[id]) { S.rs[id].left = true; }
+    S.parts = S.parts.filter(x => x !== id);
+    renderOpp(id);
+  }
+  if (onScreen("lobby")) renderLobby();
+  if (S.mode !== "host" || !S.inGame) return;
+  if (S.players.length < 2) { hostToLobby("Not enough players left"); return; }
+  if (!S.roundOver && S.parts.length < 2) { hostToLobby("Not enough players left in this round"); return; }
+  if (!S.roundOver) afterReveal(checkEnd);
+  else renderScore();
 }
 
 /* =========================================================
    LOBBY
    ========================================================= */
-function enterLobby() {
-  show("lobby"); renderLobby();
-}
+function enterLobby() { show("lobby"); renderLobby(); }
+
 function renderLobby() {
   $("roomCode").textContent = S.code;
   const host = S.mode === "host";
-  const hostName = host ? S.name : S.oppName;
-  const guestName = host ? S.oppName : S.name;
-  let h = '<div class="player"><div class="avatar">' + esc((hostName || "?")[0].toUpperCase()) + '</div><div class="pname">' + esc(hostName || "Host") + (host ? " (you)" : "") + '</div><span class="badge">Host</span></div>';
-  if (guestName) h += '<div class="player"><div class="avatar b">' + esc(guestName[0].toUpperCase()) + '</div><div class="pname">' + esc(guestName) + (!host ? " (you)" : "") + "</div></div>";
-  else h += '<div class="player"><div class="avatar wait">?</div><div class="pname" style="color:var(--muted)">Waiting for opponent…</div></div>';
+  $("playersHeader").textContent = "Players (" + S.players.length + "/" + MAX_PLAYERS + ")";
+  let h = "";
+  S.players.forEach(p => {
+    const tag = p.id === "host" ? "Host" : "";
+    h += '<div class="player"><div class="avatar" style="background:' + COLORS[p.c] + '">' + esc(p.name[0].toUpperCase()) + '</div><div class="pname">' + esc(p.name) +
+      "<small>" + [p.id === S.myId ? "You" : "", tag].filter(Boolean).join(" · ") + "</small></div></div>";
+  });
+  if (S.players.length < MAX_PLAYERS) h += '<div class="player empty"><div class="avatar wait">+</div><div class="pname" style="color:var(--muted)">Open slot</div></div>';
   $("playerList").innerHTML = h;
 
   setSeg("segTarget", String(S.settings.target));
@@ -892,13 +1106,16 @@ function renderLobby() {
 
   const sb = $("startBtn");
   if (host) {
+    const ok = S.players.length >= 2;
     sb.style.display = "";
-    sb.disabled = !S.oppName;
-    sb.textContent = S.oppName ? "Start match" : "Waiting for opponent…";
-    $("lobbyHint").textContent = S.oppName ? "" : "Send your friend the code or invite link.";
+    sb.disabled = !ok;
+    sb.textContent = ok ? "Start match (" + S.players.length + " players)" : "Waiting for players…";
+    $("lobbyHint").textContent = ok ? "More friends can still join with the code — up to 8." : "Send your friends the code or invite link.";
   } else {
     sb.style.display = "none";
-    $("lobbyHint").textContent = "Waiting for " + (S.oppName || "the host") + " to start…";
+    $("lobbyHint").textContent = S.inGame
+      ? "A match is in progress — you'll join at the start of the next round."
+      : "Waiting for " + pname("host") + " to start…";
   }
 }
 function setSeg(id, v) { document.querySelectorAll("#" + id + " button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); }
@@ -915,18 +1132,20 @@ bindSeg("segHard", v => S.settings.hard = v === "1");
 /* =========================================================
    LEAVE / SOLO
    ========================================================= */
-function leaveAll(silent) {
+function leaveAll() {
   stopTimer(); closeModal();
   $("countOverlay").classList.remove("show");
   const peer = S.peer;
-  S.conn = null; S.peer = null; S.mode = null; S.playing = false; S.oppName = "";
+  S.conn = null; S.conns = new Map(); S.peer = null; S.mode = null; S.playing = false;
+  S.players = []; S.parts = []; S.rs = {}; S.inGame = false;
   if (peer) { try { peer.destroy(); } catch (e) {} }
   show("home");
 }
 
 function startSolo() {
   const n = $("nameInput").value.trim() || "You";
-  S.name = n; S.mode = "solo"; S.oppName = ""; S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false;
+  S.name = n; S.mode = "solo"; S.myId = "me"; S.score = 0; S.round = 0;
+  S.players = [{ id: "me", name: n, score: 0, c: 0 }];
   S.settings = { target: 99, tie: "time", hard: false };
   startRound();
 }
@@ -938,17 +1157,16 @@ $("createBtn").onclick = () => createRoom();
 $("joinBtn").onclick = joinRoom;
 $("soloBtn").onclick = startSolo;
 $("codeInput").addEventListener("keydown", e => { if (e.key === "Enter") joinRoom(); });
-$("startBtn").onclick = () => { if (S.mode === "host" && S.oppName) { S.score = { me: 0, opp: 0 }; S.round = 0; S.matchOver = false; startRound(); } };
+$("startBtn").onclick = () => { if (S.mode === "host" && S.players.length >= 2) { resetMatch(); startRound(); } };
 $("leaveLobbyBtn").onclick = () => leaveAll();
 $("quitBtn").onclick = () => {
-  if (S.mode === "solo" || confirmLeave()) leaveAll();
-};
-function confirmLeave() {
-  openModal('<div class="res-title draw" style="font-size:24px">Leave the match?</div><div class="res-reason">This ends the match for both of you.</div><button class="btn primary" id="cfYes">Leave</button><button class="btn" id="cfNo">Keep playing</button>');
+  if (S.mode === "solo") return leaveAll();
+  openModal('<div class="res-title draw" style="font-size:24px">Leave the match?</div><div class="res-reason">' +
+    (S.mode === "host" ? "You're the host — this closes the room for everyone." : "You'll leave the room. The others can keep playing.") +
+    '</div><button class="btn primary" id="cfYes">Leave</button><button class="btn" id="cfNo">Keep playing</button>');
   $("cfYes").onclick = () => leaveAll();
   $("cfNo").onclick = closeModal;
-  return false;
-}
+};
 $("copyCodeBtn").onclick = () => copy(S.code, "Code copied");
 $("copyLinkBtn").onclick = () => copy(location.origin + location.pathname + "?room=" + S.code, "Invite link copied");
 function copy(text, msg) {
